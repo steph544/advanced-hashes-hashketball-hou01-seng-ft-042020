@@ -128,32 +128,18 @@ return game_hash
 end 
 
 def num_points_scored (players_name)
-  player_stats(players_name)[:points]
-# points={}
-# game_hash[:home][:players].each do |key| 
-# points[key[:player_name]] = key[:points] end  
-# game_hash[:away][:players].each do |key| 
-# points[key[:player_name]] = key[:points] end
-# points[players_name]
+player_stats(players_name)[:points]
 end 
 
 def shoe_size(players_name)
-  player_stats(players_name)[:shoe]
-# points={}
-# game_hash[:home][:players].each do |key| 
-# points[key[:player_name]] = key[:shoe] end  
-# game_hash[:away][:players].each do |key| 
-# points[key[:player_name]] = key[:shoe] end
-# points[players_name]
+player_stats(players_name)[:shoe]
 end 
 
 def player_stats(players_name)
 points={}
-game_hash[:home][:players].each do |key| 
-points[key[:player_name]] = key.reject do |element| element == :player_name end 
+game_hash.each do |key| key[1][:players].each do |key| 
+points[key[:player_name]]=key.reject do |element| element== :player_name end 
 end 
-game_hash[:away][:players].each do |key| 
-points[key[:player_name]] = key.reject do |element| element == :player_name end 
 end 
 points[players_name]
 end 
@@ -168,13 +154,13 @@ return teams
 end 
 
 def team_colors(team)
-  if game_hash[:home][:team_name] == team 
-    return game_hash[:home][:colors]
-  end 
-  if game_hash[:away][:team_name] == team
-    return game_hash[:away][:colors]
-  end 
+new_hash={}
+game_hash.each do |key|
+  new_hash[key[1][:team_name]] = key[1][:colors]
 end 
+new_hash[team]
+end 
+
 
 def player_numbers(team)
 numbers=[]
@@ -192,15 +178,12 @@ end
 end 
 
 def big_shoe_rebounds
-shoe_size={}
-sizes=[]
-max=[]
-game_hash[:home][:players].each do |key| 
-shoe_size[key[:player_name]]= key[:shoe] end  
-game_hash[:away][:players].each do |key| 
-shoe_size[key[:player_name]]= key[:shoe]end 
-max << shoe_size.max_by {|k,v| v}
-name= max[0][0]
-player_stats(name)[:rebounds]
+  new_hash={}
+  new_array=[]
+game_hash.each do |key| key[1][:players].each do|value|
+  new_hash[value[:player_name]]=value[:shoe]
+end 
+end 
+player_stats(new_hash.max_by{ |k,v| v }[0])[:rebounds]
 end 
 
