@@ -181,6 +181,7 @@ def big_shoe_rebounds
   new_hash={}
   new_array=[]
 game_hash.each do |key| key[1][:players].each do|value|
+  binding.pry
   new_hash[value[:player_name]]=value[:shoe]
 end 
 end 
